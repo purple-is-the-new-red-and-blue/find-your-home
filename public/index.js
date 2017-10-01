@@ -97,4 +97,17 @@ var data = [
         .delay(delay);
   }
 
+
+    // D3 Timeline
+  var testData = [
+    {times: [{"starting_time": 1355752800000, "display": "circle"},
+                     {"starting_time": 1355767900000, "ending_time": 1355774400000}]},
+    {times: [{"starting_time": 1355759910000, "display":"circle"}, ]},
+    {times: [{"starting_time": 1355761910000, "ending_time": 1355763910000}]}
+];
+
+    var chart = d3.timeline();
+
+    var svg = d3.select("#timeline").append("svg").attr("width", 800)
+        .datum(testData).call(chart);
 });

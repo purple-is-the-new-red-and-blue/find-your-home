@@ -44,6 +44,7 @@ footer{
     font-size: 35px;
     width: 100%;
     text-align: right;
+    margin-right: 10px;
 }
 footer i{
     padding-right: 10px;
@@ -106,7 +107,38 @@ label {
 
 .twitter{
     vertical-align: top;
-    /*width: 40%;*/
-    height: 50px;
+    width: 40%;
+    height: 500px;
     overflow: scroll;
 }
+
+
+
+      .axis path,
+      .axis line {
+        fill: none;
+        stroke: black;
+        shape-rendering: crispEdges;
+      }
+
+      .axis text {
+        font-family: sans-serif;
+        font-size: 10px;
+      }
+
+      .timeline-label {
+        font-family: sans-serif;
+        font-size: 12px;
+      }
+
+      #timeline2 .axis {
+        transform: translate(0px,40px);
+        -ms-transform: translate(0px,40px); /* IE 9 */
+        -webkit-transform: translate(0px,40px); /* Safari and Chrome */
+        -o-transform: translate(0px,40px); /* Opera */
+        -moz-transform: translate(0px,40px); /* Firefox */
+      }
+      
+      .coloredDiv {
+        height:20px; width:20px; float:left;
+      }
