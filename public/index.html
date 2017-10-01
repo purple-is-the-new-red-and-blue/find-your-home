@@ -1,33 +1,25 @@
 
 <!DOCTYPE html>
-<html>
+<html
   <head>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <link rel=stylesheet href="style.css">
+    <link href="font-awesome.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script>
-    
-    $.get( "http://192.168.1.167:5000/twitter/itszero", function( data ) {
-    })
-      .done(function(data) {
-        list = data.locations;
-        console.log("list", list);
-        for(var i = 0; i < list.length; i++){
-          var location = "<p>"+list[i].location+"</p>";
-          var time = "<p>"+list[i].created_at+"</p>";
-          var embed = "<p>"+list[i].embed+"</p>";
-          $("#content").append(list[i].embed);
-        }
-      });
-    </script>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="./index.js"></script>
     <style>
 
     </style>
   </head>
   <body>
-    <div id="map"></div>
-    <div id="content" class="isClick"></div>
+    <div id="map"></div>s
+    <div id="content">
+      <label>
+        <input type="checkbox"> Sort values
+      </label>
+    </div>
 
 
 
@@ -65,10 +57,12 @@
             infowindow.open(map, this);
             if($("#content").hasClass("isClick")){
               $("#content").removeClass("isClick");
+              $("#content").addClass("display");
             }
-            else{
-              $("#content").addClass("isClick");
-            }
+            // else{
+            //   $("#content").addClass("isClick");
+            //   $("#content").removeClass("display");
+            // }
           });
 
 
@@ -90,7 +84,8 @@
 
 
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCNz0n16M4F2KPxSCBV09jtbr3IEudndY&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"
     async defer></script>
+    <footer><a href="/analysis"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></footer>
   </body>
 </html>

@@ -15,7 +15,7 @@ button{
 * element that contains the map. */
 #map {
     height: 450px;
-    width: 400px;
+    width: 350px;
     border: 3px solid black;
     display: inline-block;
 }
@@ -26,10 +26,87 @@ html, body {
     padding: 0;
 }
 #content{
+    /*float: right;*/
     display: inline-block;
-    vertical-align: top;
-    width: 40%;
+    position: relative;
+    bottom: 40px;
 }
 .isClick{
     display: none;
+}
+.display{
+    display: inline-block;
+}
+
+footer{
+    color: red;
+    display: inline-block;
+    font-size: 35px;
+    width: 100%;
+    text-align: right;
+}
+footer i{
+    padding-right: 10px;
+    cursor: pointer;
+    color: red;
+}
+
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: steelblue;
+  fill-opacity: .9;
+}
+
+.x.axis path {
+  display: none;
+}
+
+label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+/*.no-chart svg{
+    display: none
+}*/
+
+
+/* tree line */
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+.twitter{
+    vertical-align: top;
+    width: 40%;
+    height: 450px;
+    overflow: scroll;
 }

@@ -1,0 +1,24 @@
+{
+    "name": {"Mon Aug 07 16:00:28 +0000 2017"},
+    "children": [
+    {
+        "name": "San Francisco",
+        "children": [
+        {
+            "name": "Mon Aug 07 16:00:28 +0000 2017"
+        },
+        {
+            "name": "Sun Aug 06 21:40:35 +0000 2017"
+        }]
+    },
+    {
+        "name": "Melbourne",
+        "children": [
+        {
+            "name": "Fri Aug 04 07:07:05 +0000 2017"
+        },
+        {
+            "name": "Thu Aug 03 05:08:43 +0000 2017"
+        }]
+    }]
+}
