@@ -26,20 +26,12 @@ var svg = d3.select("#content").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 var data = [
   {
-    frequency: 0.44,
+    frequency: 0.29,
+    letter: "LAX"
+  },
+  {
+    frequency: 0.32,
     letter: "SFO"
-  },
-  {
-    frequency: 0.55,
-    letter: "OAK"
-  },
-  {
-    frequency: 0.80,
-    letter: "SJC"
-  },
-  {
-    frequency: 0.76,
-    letter: "SAC"
   }
 ]
   data.forEach(function(d) {
