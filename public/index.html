@@ -2,10 +2,206 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <<script src="http://mbostock.github.io/d3/talk/20111018/d3/d3.js"></script>
+    <script>
+    $.get( "http://192.168.1.167:5000/twitter/itszero", function( data ) {
+    })
+      .done(function(data) {
+        var list = data.locations;
+        console.log("list", list);
+        for(var i = 0; i < list.length; i++){
+          var location = "<p>"+list[0][i].location+"</p>";
+          var time = "<p>"+list[0][i].created_at+"</p>";
+          $("#content").append(time);
+          console.log(list[i]);
+        }
+      });
+    </script>
+
+
+        <style type="text/css">
+
+
+.node circle {
+  cursor: pointer;
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size: 11px;
+}
+
+path.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="body">
+      <div id="footer">
+        d3.layout.tree
+        <div class="hint">click or option-click to expand or collapse</div>
+      </div>
+    </div>
+    <script type="text/javascript">
+
+var m = [20, 120, 20, 120],
+    w = 1280 - m[1] - m[3],
+    h = 800 - m[0] - m[2],
+    i = 0,
+    root;
+
+var tree = d3.layout.tree()
+    .size([h, w]);
+
+var diagonal = d3.svg.diagonal()
+    .projection(function(d) { return [d.y, d.x]; });
+
+var vis = d3.select("#body").append("svg:svg")
+    .attr("width", w + m[1] + m[3])
+    .attr("height", h + m[0] + m[2])
+  .append("svg:g")
+    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+d3.json("flare.json", function(json) {
+  root = json;
+  root.x0 = h / 2;
+  root.y0 = 0;
+
+  function toggleAll(d) {
+    if (d.children) {
+      d.children.forEach(toggleAll);
+      toggle(d);
+    }
+  }
+
+  // Initialize the display to show a few nodes.
+  root.children.forEach(toggleAll);
+  toggle(root.children[1]);
+  toggle(root.children[1].children[2]);
+  toggle(root.children[9]);
+  toggle(root.children[9].children[0]);
+
+  update(root);
+});
+
+function update(source) {
+  var duration = d3.event && d3.event.altKey ? 5000 : 500;
+
+  // Compute the new tree layout.
+  var nodes = tree.nodes(root).reverse();
+
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+  // Update the nodes…
+  var node = vis.selectAll("g.node")
+      .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+  // Enter any new nodes at the parent's previous position.
+  var nodeEnter = node.enter().append("svg:g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+      .on("click", function(d) { toggle(d); update(d); });
+
+  nodeEnter.append("svg:circle")
+      .attr("r", 1e-6)
+      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+  nodeEnter.append("svg:text")
+      .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+      .attr("dy", ".35em")
+      .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+      .text(function(d) { return d.name; })
+      .style("fill-opacity", 1e-6);
+
+  // Transition nodes to their new position.
+  var nodeUpdate = node.transition()
+      .duration(duration)
+      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+  nodeUpdate.select("circle")
+      .attr("r", 4.5)
+      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+  nodeUpdate.select("text")
+      .style("fill-opacity", 1);
+
+  // Transition exiting nodes to the parent's new position.
+  var nodeExit = node.exit().transition()
+      .duration(duration)
+      .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+      .remove();
+
+  nodeExit.select("circle")
+      .attr("r", 1e-6);
+
+  nodeExit.select("text")
+      .style("fill-opacity", 1e-6);
+
+  // Update the links…
+  var link = vis.selectAll("path.link")
+      .data(tree.links(nodes), function(d) { return d.target.id; });
+
+  // Enter any new links at the parent's previous position.
+  link.enter().insert("svg:path", "g")
+      .attr("class", "link")
+      .attr("d", function(d) {
+        var o = {x: source.x0, y: source.y0};
+        return diagonal({source: o, target: o});
+      })
+    .transition()
+      .duration(duration)
+      .attr("d", diagonal);
+
+  // Transition links to their new position.
+  link.transition()
+      .duration(duration)
+      .attr("d", diagonal);
+
+  // Transition exiting nodes to the parent's new position.
+  link.exit().transition()
+      .duration(duration)
+      .attr("d", function(d) {
+        var o = {x: source.x, y: source.y};
+        return diagonal({source: o, target: o});
+      })
+      .remove();
+
+  // Stash the old positions for transition.
+  nodes.forEach(function(d) {
+    d.x0 = d.x;
+    d.y0 = d.y;
+  });
+}
+
+// Toggle children.
+function toggle(d) {
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    d.children = d._children;
+    d._children = null;
+  }
+}
+
+    </script>
+
+
+
+
+
+
+    
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -13,6 +209,7 @@
         height: 450px;
         width: 400px;
         border: 3px solid black;
+        display: inline-block;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -21,38 +218,70 @@
         padding: 0;
       }
       #content{
-        position: relative;
-        left: 50px;
-        background: red;
+        display: inline-block;
+        vertical-align: top;
       }
     </style>
   </head>
   <body>
     <div id="map"></div>
-    <script>
+    <div id="content"></div>
+
+
+
+
+   <script>
       var map;
       function initMap() {
-       var sfoOakSjcSac = [{lat: 37.621313, lng: -122.378955}, {lat: 37.712569, lng: -122.219743}, {lat: 37.363947,lng:-121.928938}, {lat: 38.695085, lng:-121.590065}];
-       var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/'
+       var sfoOakSjcSac = [{lat: 37.621313, lng: -122.378955, radius: 16000}, {lat: 37.712569, lng: -122.219743, radius: 9000}, {lat: 37.363947,lng:-121.928938, radius: 8000}, {lat: 38.695085, lng:-121.590065, radius: 5500}];
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 37.819929, lng: -122.478255},
           zoom: 7
         });
         for(var i = 0; i < sfoOakSjcSac.length; i++){
+          var infowindow = new google.maps.InfoWindow();
+
           // Add the circle for this city to the map.
+
+          var marker = new google.maps.Marker({
+            position: sfoOakSjcSac[i],
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              labelOrigin: new google.maps.Point(0, -20),
+              labelInBackground: true,
+              scale: 3
+            },
+            map: map,
+            // label: {
+            //   text: "30%",
+            //   color: "blue"
+            // },
+            title: "test"
+          });
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.setContent('30%');
+            infowindow.open(map, this);
+          });
+
+
           var cityCircle = new google.maps.Circle({
             strokeColor: '#FF0000',
             strokeOpacity: 0.8,
             strokeWeight: 2,
             fillColor: '#FF0000',
             fillOpacity: 0.35,
-            map: map,
-            center: sfoOakSjcSac[i],
-            radius: 8000
+            radius: sfoOakSjcSac[i].radius,
+            map: map
           });
+          cityCircle.bindTo('center', marker, 'position');
+
         }
+
       }
-    </script>
+    </script> 
+
+
+
     <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"
     async defer></script>
   </body>
