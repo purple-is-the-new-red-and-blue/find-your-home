@@ -107,6 +107,6 @@ label {
 .twitter{
     vertical-align: top;
     /*width: 40%;*/
-    /*height: px;*/
+    height: 50px;
     overflow: scroll;
 }
