@@ -1,0 +1,35 @@
+button{
+    display: block;
+    color: #fff;
+    font-size: 14px;
+    padding: 12px 25px;
+    white-space: nowrap;
+    background: #b32c2d;
+    float: right;
+    text-align: center;
+    font-weight: bold;
+    min-width: 120px;
+}
+
+/* Always set the map height explicitly to define the size of the div
+* element that contains the map. */
+#map {
+    height: 450px;
+    width: 400px;
+    border: 3px solid black;
+    display: inline-block;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+#content{
+    display: inline-block;
+    vertical-align: top;
+    width: 40%;
+}
+.isClick{
+    display: none;
+}
